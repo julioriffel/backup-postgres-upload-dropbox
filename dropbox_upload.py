@@ -1,17 +1,17 @@
+import json
 import os
 import sys
+from datetime import datetime
 from os import listdir
 from os.path import join
 
 import dropbox
-from dropbox.exceptions import ApiError, AuthError
-from dropbox.files import WriteMode
-
 from dotenv import load_dotenv, dotenv_values
+from dropbox.exceptions import ApiError
+from dropbox.files import WriteMode
 
 load_dotenv()
 config = dotenv_values(".env")
-DROPBOX_TOKEN = config["DROPBOX_TOKEN"]
 
 
 # Uploads contents of LOCALFILE to Dropbox
@@ -44,25 +44,13 @@ def backup(folder, filename, delete_file=False):
 
 
 if __name__ == '__main__':
-    # Check for an access token
-    if len(DROPBOX_TOKEN) == 0:
-        sys.exit(
-            "ERROR: Looks like you didn't add your access token. "
-            'Open up backup-and-restore-example.py in a text editor and '
-            'paste in your token in line 14.'
-        )
 
-    # Create an instance of a Dropbox class, which can make requests to the API.
-    print('Creating a Dropbox object...')
-    with dropbox.Dropbox(DROPBOX_TOKEN) as dbx:
+    with open('dropbox_token.json', 'r') as f:
+        data = json.load(f)
 
-        # Check that the access token is valid
-        try:
-            dbx.users_get_current_account()
-        except AuthError:
-            sys.exit(
-                'ERROR: Invalid access token; try re-generating an ' 'access token from the app console on the web.'
-            )
+    data['oauth2_access_token_expiration'] = datetime.fromtimestamp(data['oauth2_access_token_expiration'])
+
+    with dropbox.Dropbox(**data) as dbx:
 
         # Create a backup of the current settings file
         folder = 'files'
