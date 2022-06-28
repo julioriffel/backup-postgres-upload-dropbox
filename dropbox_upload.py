@@ -6,12 +6,8 @@ from os import listdir
 from os.path import join
 
 import dropbox
-from dotenv import load_dotenv, dotenv_values
 from dropbox.exceptions import ApiError
 from dropbox.files import WriteMode
-
-load_dotenv()
-config = dotenv_values(".env")
 
 
 # Uploads contents of LOCALFILE to Dropbox

@@ -2,3 +2,4 @@
 files/*
 .idea/
 dropbox_token.json
+venv/
