@@ -3,3 +3,4 @@ files/*
 .idea/
 dropbox_token.json
 venv/
+backup-postgres.sh
