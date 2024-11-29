@@ -1,5 +1,5 @@
 -i https://pypi.org/simple
-certifi==2022.6.15
+certifi==2022.12.7
 charset-normalizer==2.0.12
 dropbox==11.32.0
 idna==3.3
